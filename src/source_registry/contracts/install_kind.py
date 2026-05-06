@@ -11,14 +11,12 @@ class InstallKind(StrEnum):
     - ``external``: Out-of-process service (e.g. a bun monorepo);
       verify by ``git rev-parse HEAD`` in the local clone.
     - ``none``: No verification beyond local-path existence.
-    - ``python_tool``: Legacy alias for ``cli_tool`` (seed compat).
     """
     CLI_TOOL = "cli_tool"
     LIBRARY = "library"
     BINARY = "binary"
     EXTERNAL = "external"
     NONE = "none"
-    PYTHON_TOOL = "python_tool"
 
 
 class InstallMode(StrEnum):

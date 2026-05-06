@@ -90,9 +90,9 @@ def test_verify_returns_not_ok_for_missing_local_path(tmp_path) -> None:
     assert "does not exist" in result.message
 
 
-def test_verify_python_tool_reports_when_not_uv_installed(tmp_path) -> None:
-    """python_tool aliases cli_tool; verify reads direct_url.json from the
-    uv-tool install. When the tool isn't uv-installed we surface that.
+def test_verify_cli_tool_reports_when_not_uv_installed(tmp_path) -> None:
+    """cli_tool verify reads direct_url.json from the uv-tool install.
+    When the tool isn't uv-installed we surface that.
     """
     path = tmp_path / "tool"
     path.mkdir()
@@ -104,7 +104,7 @@ def test_verify_python_tool_reports_when_not_uv_installed(tmp_path) -> None:
                 local_path=str(path),
                 branch="main",
                 expected_sha="abc123",
-                install_kind=InstallKind.PYTHON_TOOL,
+                install_kind=InstallKind.CLI_TOOL,
             )
         ]
     )

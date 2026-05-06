@@ -36,7 +36,7 @@ def verify_source(entry: SourceEntry) -> VerificationResult:
     if entry.install_kind == InstallKind.EXTERNAL:
         return _verify_external(entry)
 
-    if entry.install_kind in (InstallKind.CLI_TOOL, InstallKind.PYTHON_TOOL):
+    if entry.install_kind == InstallKind.CLI_TOOL:
         return _verify_cli_tool(entry)
 
     return VerificationResult(
