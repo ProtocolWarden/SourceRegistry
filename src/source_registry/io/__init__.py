@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Velascat
 from source_registry.io.json_io import write_verification_result
 from source_registry.io.yaml_io import read_yaml
 

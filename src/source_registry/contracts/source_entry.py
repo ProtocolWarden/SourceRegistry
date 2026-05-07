@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Velascat
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from source_registry.contracts.install_kind import InstallKind, InstallMode

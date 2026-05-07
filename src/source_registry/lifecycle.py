@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Velascat
 """Source lifecycle: bump / rebase / sync / auto-sync.
 
 These operate on the local clone resolved from ``SourceEntry.local_path``

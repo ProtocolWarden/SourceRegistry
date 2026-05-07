@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Velascat
 """Source-state verification.
 
 Routes by ``install_kind`` to the appropriate verifier. Returns a

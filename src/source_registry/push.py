@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Velascat
 """Open an upstream PR for one patch.
 
 Pushes the patch's fork branch to ``origin`` and runs ``gh pr create``

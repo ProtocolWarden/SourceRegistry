@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Velascat
 """Push safety-rail tests (the gh subprocess is intentionally not mocked;
 we only test the refusal paths since those don't touch the network)."""
 from __future__ import annotations

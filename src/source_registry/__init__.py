@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Velascat
 """SourceRegistry — source and fork tracking for external tool repos.
 
 Public API. Consumers should import only from this module.

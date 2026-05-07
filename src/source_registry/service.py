@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Velascat
 """Public ``SourceRegistry`` facade.
 
 Wraps the resolver, verifier, and lifecycle helpers behind a single
