@@ -21,19 +21,18 @@ import json
 import subprocess
 from dataclasses import asdict, dataclass, field
 from datetime import date, datetime, timedelta
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
-from typing import Any, Optional, Protocol
+from typing import Any, Protocol
 
 from source_registry.contracts.patch_record import PatchRecord
 from source_registry.contracts.source_entry import SourceEntry
 from source_registry.patches import load_patches
 
-
 _STALE_REVIEW_DAYS = 30
 
 
-class ReconcileSuggestion(str, Enum):
+class ReconcileSuggestion(StrEnum):
     DROP_PATCH = "DROP_PATCH"
     REBASE_PATCH = "REBASE_PATCH"
     PUSH_PATCH = "PUSH_PATCH"
@@ -46,15 +45,15 @@ class PrSnapshot:
     number: int
     state: str                          # open | closed
     merged: bool
-    last_activity_iso: Optional[str]
+    last_activity_iso: str | None
 
 
 @dataclass(frozen=True)
 class UpstreamSnapshot:
     source_name: str
     upstream_repo: str
-    latest_release: Optional[str] = None
-    latest_commit_sha: Optional[str] = None
+    latest_release: str | None = None
+    latest_commit_sha: str | None = None
     cited_prs: dict[int, PrSnapshot] = field(default_factory=dict)
     pushed_prs: dict[str, PrSnapshot] = field(default_factory=dict)
     files_changed_since_base: list[str] = field(default_factory=list)
@@ -67,7 +66,7 @@ class ReconcileFinding:
     suggestion: ReconcileSuggestion = ReconcileSuggestion.PUSH_PATCH
     reason: str = ""
     detected_at: str = ""
-    action_link: Optional[str] = None
+    action_link: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
@@ -79,9 +78,9 @@ class ReconcileFinding:
 
 
 class UpstreamApiClient(Protocol):
-    def latest_release(self, repo: str) -> Optional[str]: ...
-    def latest_commit_sha(self, repo: str, branch: str = "main") -> Optional[str]: ...
-    def get_pr(self, repo: str, number: int) -> Optional[PrSnapshot]: ...
+    def latest_release(self, repo: str) -> str | None: ...
+    def latest_commit_sha(self, repo: str, branch: str = "main") -> str | None: ...
+    def get_pr(self, repo: str, number: int) -> PrSnapshot | None: ...
     def files_changed_between(self, repo: str, base_sha: str, head_sha: str) -> list[str]: ...
 
 
@@ -107,7 +106,7 @@ class GhCliClient:
         except json.JSONDecodeError:
             return None
 
-    def latest_release(self, repo: str) -> Optional[str]:
+    def latest_release(self, repo: str) -> str | None:
         data = self._gh_json("release", "view", "--repo", repo, "--json", "tagName")
         if isinstance(data, dict):
             tag = data.get("tagName")
@@ -115,13 +114,13 @@ class GhCliClient:
                 return tag.lstrip("v")
         return None
 
-    def latest_commit_sha(self, repo: str, branch: str = "main") -> Optional[str]:
+    def latest_commit_sha(self, repo: str, branch: str = "main") -> str | None:
         data = self._gh_json("api", f"repos/{repo}/commits/{branch}", "--jq", ".sha")
         if isinstance(data, str) and len(data) >= 7:
             return data
         return None
 
-    def get_pr(self, repo: str, number: int) -> Optional[PrSnapshot]:
+    def get_pr(self, repo: str, number: int) -> PrSnapshot | None:
         data = self._gh_json(
             "pr", "view", str(number), "--repo", repo,
             "--json", "number,state,mergedAt,updatedAt",
@@ -149,7 +148,7 @@ class GhCliClient:
 # ── Helpers ─────────────────────────────────────────────────────────────
 
 
-def _extract_pr_number(url_or_number: str) -> Optional[int]:
+def _extract_pr_number(url_or_number: str) -> int | None:
     if url_or_number.isdigit():
         return int(url_or_number)
     if "/pull/" in url_or_number:
@@ -165,7 +164,7 @@ def _extract_pr_number(url_or_number: str) -> Optional[int]:
     return None
 
 
-def _parse_iso_date(value: str) -> Optional[date]:
+def _parse_iso_date(value: str) -> date | None:
     try:
         if "T" in value:
             return datetime.fromisoformat(value.replace("Z", "+00:00")).date()
@@ -236,7 +235,7 @@ def reconcile(
     patches: list[PatchRecord],
     snapshot: UpstreamSnapshot,
     *,
-    today: Optional[date] = None,
+    today: date | None = None,
 ) -> list[ReconcileFinding]:
     today = today or date.today()
     detected = today.isoformat()
@@ -315,8 +314,8 @@ def poll_all(
     entries: list[SourceEntry],
     *,
     patches_root: Path | str | None = None,
-    client: Optional[UpstreamApiClient] = None,
-    today: Optional[date] = None,
+    client: UpstreamApiClient | None = None,
+    today: date | None = None,
 ) -> list[ReconcileFinding]:
     """Run poll+reconcile for every entry. Returns flat list of findings."""
     api = client or GhCliClient()

@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 import subprocess
 from pathlib import Path
-from typing import Optional
 
 from source_registry.contracts.install_kind import InstallKind
 from source_registry.contracts.source_entry import SourceEntry
@@ -109,7 +108,7 @@ def _uv_tool_dir() -> Path:
         return Path.home() / ".local" / "share" / "uv" / "tools"
 
 
-def _read_direct_url(tool_name: str) -> Optional[dict]:
+def _read_direct_url(tool_name: str) -> dict | None:
     base = _uv_tool_dir() / tool_name
     if not base.is_dir():
         return None
@@ -184,7 +183,10 @@ def _verify_cli_tool(entry: SourceEntry) -> VerificationResult:
             expected_sha=entry.expected_sha,
             actual_sha=None,
             local_path=entry.local_path,
-            message="direct_url.json present but no SHA derivable (no vcs_info, no git HEAD at install dir)",
+            message=(
+                "direct_url.json present but no SHA derivable "
+                "(no vcs_info, no git HEAD at install dir)"
+            ),
         )
 
     ok = actual_sha.startswith(entry.expected_sha) or entry.expected_sha.startswith(actual_sha)
@@ -201,7 +203,7 @@ def _verify_cli_tool(entry: SourceEntry) -> VerificationResult:
     )
 
 
-def _resolve_install_dir(metadata: dict, entry) -> Optional[Path]:
+def _resolve_install_dir(metadata: dict, entry) -> Path | None:
     """Extract a filesystem path from direct_url.json's ``url`` field.
 
     Returns the directory path the dev-mode install came from. Falls

@@ -7,7 +7,6 @@ import pytest
 
 from source_registry import PatchError, drop_patch, load_patches
 
-
 _VALID = """
 title: "Pass coach kwarg through orchestrator subclasses"
 status: pending_review

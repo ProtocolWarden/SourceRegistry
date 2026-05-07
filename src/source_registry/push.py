@@ -13,7 +13,6 @@ import shlex
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 import yaml
 
@@ -32,7 +31,7 @@ class PushResult:
     source_name: str
     patch_id: str
     branch: str
-    pr_url: Optional[str]
+    pr_url: str | None
     pushed_branch: bool
     pr_created: bool
     detail: str = ""

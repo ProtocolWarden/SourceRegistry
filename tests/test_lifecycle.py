@@ -13,14 +13,12 @@ import pytest
 
 from source_registry import (
     AutoSyncResult,
-    InstallMode,
     LifecycleError,
     SourceEntry,
     SourceRegistry,
     auto_sync_source,
     bump_source,
     rebase_source,
-    sync_source,
 )
 from source_registry.contracts.install_kind import InstallKind
 

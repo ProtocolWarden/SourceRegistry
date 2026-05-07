@@ -15,13 +15,11 @@ PR creation stays opt-in via ``push``.
 """
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Optional
 
-import yaml
-
-from source_registry.contracts.install_kind import InstallKind, InstallMode
+from source_registry.contracts.install_kind import InstallMode
 from source_registry.contracts.source_entry import SourceEntry
 from source_registry.errors import SourceRegistryError
 from source_registry.git import git_ops
@@ -56,7 +54,7 @@ class RebaseResult:
 class SyncResult:
     name: str
     rebase: RebaseResult
-    bump: Optional[BumpResult] = None
+    bump: BumpResult | None = None
     install_ok: bool = False
 
 
@@ -80,9 +78,9 @@ class AutoSyncResult:
 def bump_source(
     entry: SourceEntry,
     *,
-    to_sha: Optional[str] = None,
-    on_pin_update: Optional[Callable[[str, str], None]] = None,
-    patch_touched_files: Optional[Callable[[], dict[str, list[str]]]] = None,
+    to_sha: str | None = None,
+    on_pin_update: Callable[[str, str], None] | None = None,
+    patch_touched_files: Callable[[], dict[str, list[str]]] | None = None,
 ) -> BumpResult:
     """Pin the registry to the source's current HEAD (or a specified SHA).
 
@@ -129,8 +127,8 @@ def rebase_source(
     entry: SourceEntry,
     *,
     upstream_remote: str = "upstream",
-    upstream_ref: Optional[str] = None,
-    patch_touched_files: Optional[Callable[[], dict[str, list[str]]]] = None,
+    upstream_ref: str | None = None,
+    patch_touched_files: Callable[[], dict[str, list[str]]] | None = None,
 ) -> RebaseResult:
     """git fetch upstream, git rebase upstream/<branch>.
 
@@ -180,8 +178,8 @@ def sync_source(
     entry: SourceEntry,
     *,
     mode: InstallMode = InstallMode.DEV,
-    install_runner: Optional[Callable[[SourceEntry, InstallMode], bool]] = None,
-    on_pin_update: Optional[Callable[[str, str], None]] = None,
+    install_runner: Callable[[SourceEntry, InstallMode], bool] | None = None,
+    on_pin_update: Callable[[str, str], None] | None = None,
 ) -> SyncResult:
     """rebase + bump + reinstall, in that order. Stops at first failure.
 
@@ -209,9 +207,9 @@ def auto_sync_source(
     *,
     mode: InstallMode = InstallMode.DEV,
     dry_run: bool = False,
-    has_local_patches: Optional[Callable[[str], bool]] = None,
-    install_runner: Optional[Callable[[SourceEntry, InstallMode], bool]] = None,
-    on_pin_update: Optional[Callable[[str, str], None]] = None,
+    has_local_patches: Callable[[str], bool] | None = None,
+    install_runner: Callable[[SourceEntry, InstallMode], bool] | None = None,
+    on_pin_update: Callable[[str, str], None] | None = None,
 ) -> AutoSyncResult:
     """Silently apply safe reconcile actions for one source.
 
@@ -332,9 +330,9 @@ def auto_sync_all(
     *,
     mode: InstallMode = InstallMode.DEV,
     dry_run: bool = False,
-    has_local_patches: Optional[Callable[[str], bool]] = None,
-    install_runner: Optional[Callable[[SourceEntry, InstallMode], bool]] = None,
-    on_pin_update: Optional[Callable[[str, str], None]] = None,
+    has_local_patches: Callable[[str], bool] | None = None,
+    install_runner: Callable[[SourceEntry, InstallMode], bool] | None = None,
+    on_pin_update: Callable[[str, str], None] | None = None,
 ) -> list[AutoSyncResult]:
     """Run auto-sync for every entry."""
     return [

@@ -2,10 +2,6 @@
 from __future__ import annotations
 
 from datetime import date, timedelta
-from pathlib import Path
-from typing import Optional
-
-import pytest
 
 from source_registry import (
     PatchRecord,
@@ -34,13 +30,13 @@ class FakeClient(UpstreamApiClient):
         self._sha = latest_sha
         self._files = files_changed or []
 
-    def latest_release(self, repo: str) -> Optional[str]:
+    def latest_release(self, repo: str) -> str | None:
         return self._release
 
-    def latest_commit_sha(self, repo: str, branch: str = "main") -> Optional[str]:
+    def latest_commit_sha(self, repo: str, branch: str = "main") -> str | None:
         return self._sha
 
-    def get_pr(self, repo: str, number: int) -> Optional[PrSnapshot]:
+    def get_pr(self, repo: str, number: int) -> PrSnapshot | None:
         return self._prs.get(number)
 
     def files_changed_between(self, repo: str, base_sha: str, head_sha: str) -> list[str]:

@@ -101,7 +101,8 @@ def load_patches(patches_root: Path | str) -> PatchRegistry:
 
             if raw.get("patch_id") != stem:
                 raise PatchError(
-                    f"{patch_file}: filename {stem!r} doesn't match patch_id {raw.get('patch_id')!r}"
+                    f"{patch_file}: filename {stem!r} doesn't match "
+                    f"patch_id {raw.get('patch_id')!r}"
                 )
 
             try:

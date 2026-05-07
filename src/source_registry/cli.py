@@ -15,7 +15,6 @@ from __future__ import annotations
 import json as _json
 import sys
 from pathlib import Path
-from typing import Optional
 
 import typer
 
@@ -27,18 +26,17 @@ from source_registry.poll import poll_all
 from source_registry.push import PushError, push_patch
 from source_registry.service import SourceRegistry
 
-
 app = typer.Typer(
     help="Source and fork tracking — verify, bump, rebase, sync, auto-sync, poll, push.",
     no_args_is_help=True,
 )
 
 
-def _resolve(path: Optional[Path]) -> Optional[Path]:
+def _resolve(path: Path | None) -> Path | None:
     return path.expanduser().resolve() if path else None
 
 
-def _load_registry(registry_path: Optional[Path]) -> SourceRegistry:
+def _load_registry(registry_path: Path | None) -> SourceRegistry:
     if registry_path is None:
         typer.echo("ERROR: --registry is required (no default registry path)", err=True)
         raise typer.Exit(2)
@@ -54,9 +52,9 @@ def _load_registry(registry_path: Optional[Path]) -> SourceRegistry:
 
 @app.command("verify")
 def verify(
-    name: Optional[str] = typer.Argument(None, help="Source name (omit if --all)"),
+    name: str | None = typer.Argument(None, help="Source name (omit if --all)"),
     all_sources: bool = typer.Option(False, "--all", help="Verify every entry"),
-    registry: Optional[Path] = typer.Option(None, "--registry"),
+    registry: Path | None = typer.Option(None, "--registry"),
 ) -> None:
     reg = _load_registry(_resolve(registry))
     if all_sources or name is None:
@@ -76,7 +74,7 @@ def verify(
 
 @app.command("status")
 def status(
-    registry: Optional[Path] = typer.Option(None, "--registry"),
+    registry: Path | None = typer.Option(None, "--registry"),
 ) -> None:
     """Per-source registry summary."""
     reg = _load_registry(_resolve(registry))
@@ -111,8 +109,8 @@ def status(
 @app.command("bump")
 def bump(
     name: str = typer.Argument(..., help="Source name to bump"),
-    to_sha: Optional[str] = typer.Option(None, "--to", help="SHA to pin (omit = HEAD)"),
-    registry: Optional[Path] = typer.Option(None, "--registry"),
+    to_sha: str | None = typer.Option(None, "--to", help="SHA to pin (omit = HEAD)"),
+    registry: Path | None = typer.Option(None, "--registry"),
 ) -> None:
     reg = _load_registry(_resolve(registry))
     try:
@@ -129,7 +127,7 @@ def bump(
 def rebase(
     name: str = typer.Argument(..., help="Source name to rebase"),
     upstream_remote: str = typer.Option("upstream", "--upstream-remote"),
-    registry: Optional[Path] = typer.Option(None, "--registry"),
+    registry: Path | None = typer.Option(None, "--registry"),
 ) -> None:
     reg = _load_registry(_resolve(registry))
     try:
@@ -149,7 +147,7 @@ def rebase(
 def sync(
     name: str = typer.Argument(...),
     mode: str = typer.Option("dev", "--mode", "-m"),
-    registry: Optional[Path] = typer.Option(None, "--registry"),
+    registry: Path | None = typer.Option(None, "--registry"),
 ) -> None:
     reg = _load_registry(_resolve(registry))
     try:
@@ -172,11 +170,11 @@ def sync(
 
 @app.command("auto-sync")
 def auto_sync(
-    name: Optional[str] = typer.Argument(None, help="Source name (omit if --all)"),
+    name: str | None = typer.Argument(None, help="Source name (omit if --all)"),
     all_sources: bool = typer.Option(False, "--all"),
     mode: str = typer.Option("dev", "--mode", "-m"),
     dry_run: bool = typer.Option(False, "--dry-run"),
-    registry: Optional[Path] = typer.Option(None, "--registry"),
+    registry: Path | None = typer.Option(None, "--registry"),
 ) -> None:
     reg = _load_registry(_resolve(registry))
     try:
@@ -215,9 +213,9 @@ def auto_sync(
 
 @app.command("poll")
 def poll(
-    patches: Optional[Path] = typer.Option(None, "--patches", help="Path to patches root"),
+    patches: Path | None = typer.Option(None, "--patches", help="Path to patches root"),
     json_output: bool = typer.Option(False, "--json"),
-    registry: Optional[Path] = typer.Option(None, "--registry"),
+    registry: Path | None = typer.Option(None, "--registry"),
 ) -> None:
     """Run one poll iteration; emits findings.
 
@@ -243,9 +241,9 @@ def poll(
 @app.command("push")
 def push(
     full_id: str = typer.Argument(..., help="<source>:<PATCH-NNN>"),
-    patches: Optional[Path] = typer.Option(None, "--patches", help="Path to patches root"),
+    patches: Path | None = typer.Option(None, "--patches", help="Path to patches root"),
     dry_run: bool = typer.Option(False, "--dry-run"),
-    registry: Optional[Path] = typer.Option(None, "--registry"),
+    registry: Path | None = typer.Option(None, "--registry"),
 ) -> None:
     """Push a patch's branch to its fork remote and open an upstream PR.
 
@@ -288,7 +286,7 @@ def push(
 @app.command("drop")
 def drop(
     full_id: str = typer.Argument(..., help="<source>:<PATCH-NNN>"),
-    patches: Optional[Path] = typer.Option(None, "--patches"),
+    patches: Path | None = typer.Option(None, "--patches"),
 ) -> None:
     """Remove a patch yaml after upstream merge.
 

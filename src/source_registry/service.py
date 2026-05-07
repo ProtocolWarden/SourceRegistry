@@ -6,8 +6,8 @@ result classes) — never on the internal modules.
 """
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable, Optional
 
 from source_registry.contracts.install_kind import InstallMode
 from source_registry.contracts.source_entry import SourceEntry
@@ -34,7 +34,7 @@ class SourceRegistry:
         self._resolver = SourceResolver(sources)
 
     @classmethod
-    def from_yaml(cls, path: str | Path) -> "SourceRegistry":
+    def from_yaml(cls, path: str | Path) -> SourceRegistry:
         return cls(load_sources(str(path)))
 
     # ── Resolution ──────────────────────────────────────────────────────
@@ -59,8 +59,8 @@ class SourceRegistry:
         self,
         name: str,
         *,
-        to_sha: Optional[str] = None,
-        on_pin_update: Optional[Callable[[str, str], None]] = None,
+        to_sha: str | None = None,
+        on_pin_update: Callable[[str, str], None] | None = None,
     ) -> BumpResult:
         return bump_source(
             self.resolve(name), to_sha=to_sha, on_pin_update=on_pin_update,
@@ -79,8 +79,8 @@ class SourceRegistry:
         name: str,
         *,
         mode: InstallMode = InstallMode.DEV,
-        install_runner: Optional[Callable[[SourceEntry, InstallMode], bool]] = None,
-        on_pin_update: Optional[Callable[[str, str], None]] = None,
+        install_runner: Callable[[SourceEntry, InstallMode], bool] | None = None,
+        on_pin_update: Callable[[str, str], None] | None = None,
     ) -> SyncResult:
         return sync_source(
             self.resolve(name), mode=mode,
@@ -93,9 +93,9 @@ class SourceRegistry:
         *,
         mode: InstallMode = InstallMode.DEV,
         dry_run: bool = False,
-        has_local_patches: Optional[Callable[[str], bool]] = None,
-        install_runner: Optional[Callable[[SourceEntry, InstallMode], bool]] = None,
-        on_pin_update: Optional[Callable[[str, str], None]] = None,
+        has_local_patches: Callable[[str], bool] | None = None,
+        install_runner: Callable[[SourceEntry, InstallMode], bool] | None = None,
+        on_pin_update: Callable[[str, str], None] | None = None,
     ) -> AutoSyncResult:
         return auto_sync_source(
             self.resolve(name), mode=mode, dry_run=dry_run,
@@ -108,9 +108,9 @@ class SourceRegistry:
         *,
         mode: InstallMode = InstallMode.DEV,
         dry_run: bool = False,
-        has_local_patches: Optional[Callable[[str], bool]] = None,
-        install_runner: Optional[Callable[[SourceEntry, InstallMode], bool]] = None,
-        on_pin_update: Optional[Callable[[str, str], None]] = None,
+        has_local_patches: Callable[[str], bool] | None = None,
+        install_runner: Callable[[SourceEntry, InstallMode], bool] | None = None,
+        on_pin_update: Callable[[str, str], None] | None = None,
     ) -> list[AutoSyncResult]:
         return auto_sync_all(
             self._sources, mode=mode, dry_run=dry_run,

@@ -7,7 +7,6 @@ from typer.testing import CliRunner
 
 from source_registry.cli import app
 
-
 _RUNNER = CliRunner()
 
 

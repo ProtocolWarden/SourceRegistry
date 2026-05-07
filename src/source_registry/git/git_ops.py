@@ -7,7 +7,6 @@ only for the simple ``get_head_sha`` helper that's expected to succeed.
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 from source_registry.errors import GitOperationError
 
@@ -48,7 +47,7 @@ def head_sha(repo: str | Path) -> str:
     return get_head_sha(str(repo))
 
 
-def head_sha_at_ref(repo: str | Path, ref: str) -> Optional[str]:
+def head_sha_at_ref(repo: str | Path, ref: str) -> str | None:
     """Resolve ``ref`` to a SHA, or None if ``git rev-parse`` fails."""
     res = _git(repo, "rev-parse", ref)
     return res.stdout.strip() if res.ok else None
@@ -79,7 +78,7 @@ def is_clean(repo: str | Path) -> bool:
     return res.ok and res.stdout.strip() == ""
 
 
-def remote_url(repo: str | Path, remote: str) -> Optional[str]:
+def remote_url(repo: str | Path, remote: str) -> str | None:
     res = _git(repo, "remote", "get-url", remote)
     return res.stdout.strip() if res.ok else None
 
