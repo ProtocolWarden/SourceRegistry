@@ -18,6 +18,9 @@ privacy:
 # Audit: per-detector exclusions and tuning
 # ---------------------------------------------------------------------------
 audit:
+  cross_repo:
+    platform_manifest_repo: ../PlatformManifest
+
   exclude_paths:
     T1:
       # cli.py is a Typer CLI — its handler functions are exercised through
