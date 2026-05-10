@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 Velascat
+# Copyright (C) 2026 ProtocolWarden
 """CLI smoke tests using typer.testing.CliRunner."""
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ _REGISTRY_YAML = """\
 sources:
   - name: archon
     upstream_url: https://github.com/coleam00/Archon
-    fork_url: https://github.com/Velascat/Archon
+    fork_url: https://github.com/ProtocolWarden/Archon
     local_path: /tmp/archon-fake
     branch: main
     expected_sha: abc1234

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 Velascat
+# Copyright (C) 2026 ProtocolWarden
 """Push safety-rail tests (the gh subprocess is intentionally not mocked;
 we only test the refusal paths since those don't touch the network)."""
 from __future__ import annotations
@@ -16,7 +16,7 @@ def _entry(*, auto_pr_push: bool = True, local_path: str = "/tmp") -> SourceEntr
     return SourceEntry(
         name="kodo",
         upstream_url="https://github.com/ikamensh/kodo",
-        fork_url="https://github.com/Velascat/kodo",
+        fork_url="https://github.com/ProtocolWarden/kodo",
         local_path=local_path,
         branch="dev",
         expected_sha="abc1234",

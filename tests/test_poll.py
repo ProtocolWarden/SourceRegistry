@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 Velascat
+# Copyright (C) 2026 ProtocolWarden
 """Poll + reconcile tests with a fake UpstreamApiClient."""
 from __future__ import annotations
 
@@ -50,7 +50,7 @@ def _entry(name: str = "kodo", *, base_commit: str = "9c46e85",
     return SourceEntry(
         name=name,
         upstream_url="https://github.com/ikamensh/kodo",
-        fork_url="https://github.com/Velascat/kodo",
+        fork_url="https://github.com/ProtocolWarden/kodo",
         local_path="/tmp/kodo",
         branch="dev",
         expected_sha="abcdef0",

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 Velascat
+# Copyright (C) 2026 ProtocolWarden
 """Lifecycle tests — bump / rebase / sync / auto_sync.
 
 Uses real local git repos in tmp_path so behavior matches production

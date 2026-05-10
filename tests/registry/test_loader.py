@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 Velascat
+# Copyright (C) 2026 ProtocolWarden
 import pytest
 
 from source_registry.errors import RegistryLoadError
@@ -13,7 +13,7 @@ def test_load_sources_valid_yaml(tmp_path) -> None:
 sources:
   - name: archon
     upstream_url: https://github.com/example/archon
-    fork_url: https://github.com/Velascat/archon
+    fork_url: https://github.com/ProtocolWarden/archon
     local_path: /repos/archon
     branch: main
     expected_sha: abc123

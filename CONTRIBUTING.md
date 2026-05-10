@@ -11,7 +11,7 @@ SourceRegistry is the source and fork tracking layer for external tools and fram
 ## Development Setup
 
 ```bash
-git clone https://github.com/Velascat/SourceRegistry.git
+git clone https://github.com/ProtocolWarden/SourceRegistry.git
 cd SourceRegistry
 python3 -m venv .venv
 source .venv/bin/activate

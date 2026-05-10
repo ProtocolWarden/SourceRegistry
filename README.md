@@ -65,7 +65,7 @@ registry = SourceRegistry(
         SourceEntry(
             name="archon",
             upstream_url="https://github.com/example/archon",
-            fork_url="https://github.com/Velascat/archon",
+            fork_url="https://github.com/ProtocolWarden/archon",
             local_path="/repos/archon",
             branch="main",
             expected_sha="abc123",
@@ -117,7 +117,7 @@ pip install source-registry
 Development:
 
 ```bash
-git clone https://github.com/Velascat/SourceRegistry.git
+git clone https://github.com/ProtocolWarden/SourceRegistry.git
 cd SourceRegistry
 pip install -e ".[dev]"
 pytest -q
