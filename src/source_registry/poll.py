@@ -64,7 +64,7 @@ class UpstreamSnapshot:
 @dataclass(frozen=True)
 class ReconcileFinding:
     rule: str = "UPSTREAM_RECONCILE"
-    patch_id: str = ""           # e.g. "kodo:PATCH-001" or "<source>:" for source-level
+    patch_id: str = ""           # e.g. "team_executor:PATCH-001" or "<source>:" for source-level
     suggestion: ReconcileSuggestion = ReconcileSuggestion.PUSH_PATCH
     reason: str = ""
     detected_at: str = ""

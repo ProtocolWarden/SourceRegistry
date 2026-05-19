@@ -24,15 +24,15 @@ def test_service_resolve_returns_expected_source(tmp_path) -> None:
     repo = tmp_path / "repo"
     sha = _make_repo(str(repo))
     entry = SourceEntry(
-        name="archon",
-        upstream_url="https://github.com/example/archon",
+        name="dag_executor",
+        upstream_url="https://github.com/ProtocolWarden/DagExecutor",
         local_path=str(repo),
         branch="main",
         expected_sha=sha,
         install_kind=InstallKind.EXTERNAL,
     )
     registry = SourceRegistry([entry])
-    assert registry.resolve("archon").local_path == str(repo)
+    assert registry.resolve("dag_executor").local_path == str(repo)
 
 
 def test_verify_external_success_when_head_matches(tmp_path) -> None:
@@ -41,8 +41,8 @@ def test_verify_external_success_when_head_matches(tmp_path) -> None:
     registry = SourceRegistry(
         [
             SourceEntry(
-                name="archon",
-                upstream_url="https://github.com/example/archon",
+                name="dag_executor",
+                upstream_url="https://github.com/ProtocolWarden/DagExecutor",
                 local_path=str(repo),
                 branch="main",
                 expected_sha=sha,
@@ -50,7 +50,7 @@ def test_verify_external_success_when_head_matches(tmp_path) -> None:
             )
         ]
     )
-    result = registry.verify("archon")
+    result = registry.verify("dag_executor")
     assert result.ok is True
 
 
@@ -60,8 +60,8 @@ def test_verify_external_fails_when_head_differs(tmp_path) -> None:
     registry = SourceRegistry(
         [
             SourceEntry(
-                name="archon",
-                upstream_url="https://github.com/example/archon",
+                name="dag_executor",
+                upstream_url="https://github.com/ProtocolWarden/DagExecutor",
                 local_path=str(repo),
                 branch="main",
                 expected_sha="deadbeef",
@@ -69,7 +69,7 @@ def test_verify_external_fails_when_head_differs(tmp_path) -> None:
             )
         ]
     )
-    result = registry.verify("archon")
+    result = registry.verify("dag_executor")
     assert result.ok is False
 
 
@@ -78,8 +78,8 @@ def test_verify_returns_not_ok_for_missing_local_path(tmp_path) -> None:
     registry = SourceRegistry(
         [
             SourceEntry(
-                name="archon",
-                upstream_url="https://github.com/example/archon",
+                name="dag_executor",
+                upstream_url="https://github.com/ProtocolWarden/DagExecutor",
                 local_path=str(missing),
                 branch="main",
                 expected_sha="abc123",
@@ -87,7 +87,7 @@ def test_verify_returns_not_ok_for_missing_local_path(tmp_path) -> None:
             )
         ]
     )
-    result = registry.verify("archon")
+    result = registry.verify("dag_executor")
     assert result.ok is False
     assert "does not exist" in result.message
 

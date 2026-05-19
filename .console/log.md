@@ -3,6 +3,11 @@
 _Chronological continuity log. Decisions, stop points, what changed and why._
 _Not a task tracker — that's backlog.md. Keep entries concise and dated._
 
+- 2026-05-19 — Removed live kodo/archon references from src and tests. Updated
+  poll.py comment example (kodo: → team_executor:). Updated test fixtures:
+  test_patches.py and test_push.py (kodo → team_executor, URLs updated),
+  test_service.py (archon → dag_executor).
+
 - 2026-05-12 — RepoGraph boundary artifact wiring tightened to file-only: the
   custodian audit path now materializes `REPOGRAPH_BOUNDARY_ARTIFACT_FILE` from a
   source locator before invoking Custodian, and the remaining deployment-facing
