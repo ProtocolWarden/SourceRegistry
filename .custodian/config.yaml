@@ -16,6 +16,10 @@ privacy:
 # Audit: per-detector exclusions and tuning
 # ---------------------------------------------------------------------------
 audit:
+  # R1/R2 (.console reconciliation gate) are opt-in. This repo is reconciled and
+  # scrub-clean (log under budget, no private-name leak), so it enforces them.
+  reconcile_enforce: true
+
   cross_repo:
     platform_manifest_repo: ../PlatformManifest
 
