@@ -1,5 +1,12 @@
 # Log
 
+## 2026-06-04 — Enforce-only console reconciliation: flip reconcile_enforce
+
+.console is already clean and under budget (log < 400 lines, no scrub-target
+leak; `cl reconcile check` GREEN). Added `audit.reconcile_enforce: true` to
+.custodian/config.yaml so R1/R2 fail-closed here. Custodian audit gains no
+R1/R2 findings; all 66 tests pass.
+
 ## 2026-05-21 — Add closing console-context fence to CLAUDE.md
 
 Added <!-- /console-context --> end marker so OperatorConsole only
