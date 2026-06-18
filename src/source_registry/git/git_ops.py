@@ -79,17 +79,3 @@ def force_push_with_lease(repo: str | Path, remote: str, branch: str) -> GitResu
 def is_clean(repo: str | Path) -> bool:
     res = _git(repo, "status", "--porcelain")
     return res.ok and res.stdout.strip() == ""
-
-
-def remote_url(repo: str | Path, remote: str) -> str | None:
-    res = _git(repo, "remote", "get-url", remote)
-    return res.stdout.strip() if res.ok else None
-
-
-def list_files_changed_between(
-    repo: str | Path, base_ref: str, head_ref: str,
-) -> list[str]:
-    res = _git(repo, "diff", "--name-only", f"{base_ref}..{head_ref}")
-    if not res.ok:
-        return []
-    return [line for line in res.stdout.splitlines() if line.strip()]

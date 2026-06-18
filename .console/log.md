@@ -88,3 +88,14 @@ truth; pre-push catches regressions before they hit GitHub.
 ## 2026-05-23 — Standardize pre-push hook
 
 - Updated `.hooks/pre-push` to the auto-discovering boundary-artifact variant (auto-locates PrivateManifest/dist artifact; extra custodian-multi fallback path).
+
+## 2026-06-18 — cleanup: delete dead git-ops primitives + all_patches
+
+Ecosystem incomplete-integration remediation (Phase 3 DELETE). Removed
+over-ported dead code from the initial fork-manager port (PR #2): git/git_ops.py
+`remote_url` + `list_files_changed_between`, and patches.py
+`PatchRegistry.all_patches`. All three: zero src callers, zero tests, not in any
+__all__, no cross-repo consumers (verified). Sibling accessors (`for_source`,
+`by_source`, `get`) and the wired git primitives stay. 66 tests green; ruff +
+audit (B2 env only). (Pre-existing stale T7 doctor warnings for
+validation/vocabulary dirs are unrelated and not a CI gate here.)
