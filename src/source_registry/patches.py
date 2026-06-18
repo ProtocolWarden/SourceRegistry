@@ -49,12 +49,6 @@ class PatchRegistry:
     def for_source(self, source_name: str) -> list[PatchRecord]:
         return list(self._by_source.get(source_name, []))
 
-    def all_patches(self) -> list[PatchRecord]:
-        out: list[PatchRecord] = []
-        for patches in self._by_source.values():
-            out.extend(patches)
-        return out
-
     def get(self, full_id: str) -> PatchRecord | None:
         """Lookup by ``<source>:<PATCH-NNN>`` identifier."""
         if ":" not in full_id:
